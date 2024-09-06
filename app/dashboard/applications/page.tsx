@@ -1,58 +1,65 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { ApplicantsTable } from "@/components/dashbaord/applicants-table";
-import React from "react";
+
+interface Applicant {
+  applicantNo: string;
+  country: string;
+  purpose: string;
+  status: string;
+  submitDate: string;
+  reviewedBy: string;
+}
 
 const CrewManagement = () => {
-  const applicants = [
-    {
-      applicantNo: "1",
-      country: "India",
-      purpose: "Vacation",
-      status: "Approved",
-      submitDate: "2023-06-23",
-      reviewedBy: "John Doe",
-    },
-    {
-      applicantNo: "2",
-      country: "China",
-      purpose: "Business",
-      status: "Not Approved",
-      submitDate: "2023-06-23",
-      reviewedBy: "Visuka JM",
-    },
-    {
-      applicantNo: "3",
-      country: "India",
-      purpose: "Vacation",
-      status: "Approved",
-      submitDate: "2023-06-23",
-      reviewedBy: "Samantha",
-    },
-    {
-      applicantNo: "4",
-      country: "USA",
-      purpose: "Vacation",
-      status: "Pending Review",
-      submitDate: "2023-06-23",
-      reviewedBy: "",
-    },
-    {
-      applicantNo: "5",
-      country: "Canada",
-      purpose: "Education",
-      status: "Not Approved",
-      submitDate: "2023-06-23",
-      reviewedBy: "Quincy",
-    },
-  ];
+  const [applicants, setApplicants] = useState<Applicant[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchApplicants = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3001/visa_app/applications"
+        );
+
+        console.log(response.data);
+
+        // Transform the data to the expected format
+        const transformedApplicants = response.data.map(
+          (item: any, index: number) => ({
+            applicantNo: (index + 1).toString(),
+            country: item.nationality,
+            purpose: item.visaObjective,
+            status: "Pending Review",
+            submitDate: item.dateOfIssue.split("T")[0],
+            reviewedBy: "", 
+          })
+        );
+
+        setApplicants(transformedApplicants);
+        setLoading(false);
+      } catch (error) {
+        setError((error as any).message);
+        setLoading(false);
+      }
+    };
+
+    fetchApplicants();
+  }, []);
+
+  
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div className="w-full flex flex-col justify-center pr-[30px] items-start">
       <h1 className="w-full font-semibold text-[36px] text-[#0B2567]">
         Xplore Ceylon - Applicant Management
       </h1>
-
-      {/* <CrewData /> */}
-
       <ApplicantsTable applicants={applicants} />
     </div>
   );
