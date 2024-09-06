@@ -30,7 +30,7 @@ const CrewManagement = () => {
         // Transform the data to the expected format
         const transformedApplicants = response.data.map(
           (item: any, index: number) => ({
-            applicantNo: (index + 1).toString(),
+            applicantNo: item._id,
             country: item.nationality,
             purpose: item.visaObjective,
             status: "Pending Review",

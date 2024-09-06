@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
@@ -78,19 +78,19 @@ const ApplicantDetailPage: React.FC<ApplicantDetailPageProps> = ({
       }
     };
 
-    const fetchPassportImage = async () => {
-      try {
-        const imageResponse = await axios.get(
-          `http://localhost:3001/visa_app/images/${applicantNo}`
-        );
-        setPassportImageUrl(imageResponse.data.imagePath); // Adjust the response field if necessary
-      } catch (err) {
-        setError("Failed to load passport image.");
-      }
-    };
+    // const fetchPassportImage = async () => {
+    //   try {
+    //     const imageResponse = await axios.get(
+    //       `http://localhost:3001/visa_app/images/${applicantNo}`
+    //     );
+    //     setPassportImageUrl(imageResponse.data.imagePath);
+    //   } catch (err) {
+    //     setError("Failed to load passport image.");
+    //   }
+    // };
 
     fetchApplicant();
-    fetchPassportImage();
+    // fetchPassportImage();
   }, [applicantNo]);
 
   const handleApproval = async (status: string) => {
@@ -110,7 +110,9 @@ const ApplicantDetailPage: React.FC<ApplicantDetailPageProps> = ({
   };
 
   if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  // if (error) return <div>Error: {error}</div>;
+
+  console.log(applicant);
 
   return (
     <div className="p-4">
