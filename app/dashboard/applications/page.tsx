@@ -4,12 +4,12 @@ import React from "react";
 const CrewManagement = () => {
   const applicants = [
     {
-      applicantNo: "1",
-      country: "India",
-      purpose: "Vacation",
-      status: "Approved",
-      submitDate: "2023-06-23",
-      reviewedBy: "John Doe",
+      applicantNo: "66db2d5d12f86ab9c889ab8e",
+      country: "USA",
+      purpose: "Tourism",
+      status: "Pending Review",
+      submitDate: "2020-01-01",
+      reviewedBy: "Jane Doe",
     },
     {
       applicantNo: "2",
